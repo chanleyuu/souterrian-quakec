@@ -1305,6 +1305,15 @@ void() BackpackTouch =
 		sprint (other, s);
 		sprint (other, " cells");
 	}
+	if (self.ammo_magnum)
+	{
+		if (acount)
+			sprint(other, ", ");
+		acount = 1;
+		s = ftos(self.ammo_magnum);
+		sprint (other, s);
+		sprint (other, " magnum");
+	}
 	
 	sprint (other, "\n");
 // backpack touch sound
@@ -1355,6 +1364,8 @@ void() DropBackpack =
 	else if (item.items == IT_ROCKET_LAUNCHER)
 		item.netname = "Rocket Launcher";
 	else if (item.items == IT_LIGHTNING)
+		item.netname = "Thunderbolt";
+	else if (item.items == IT_REVOLVER)
 		item.netname = "Thunderbolt";
 	else
 		item.netname = "";
