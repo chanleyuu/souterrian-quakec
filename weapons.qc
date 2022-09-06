@@ -856,7 +856,7 @@ void() W_SetCurrentAmmo =
 	else if (self.weapon == IT_REVOLVER)
 	{
 		self.currentammo = self.ammo_magnum;
-		self.weaponmodel = "progs/v_magnum.mdl";
+		self.weaponmodel = "progs/Revolver.mdl";
 		self.weaponframe = 0;
 		self.items = self.items | IT_MAGNUM;
 	}

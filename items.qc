@@ -342,6 +342,8 @@ void() bound_other_ammo =
 		other.ammo_rockets = 100;		
 	if (other.ammo_cells > 100)
 		other.ammo_cells = 100;		
+	if (other.ammo_revolver > 100)
+		other.ammo_revolver = 100;	
 };
 
 
@@ -456,6 +458,14 @@ void() weapon_touch =
 		hadammo = other.ammo_rockets;			
 		new = IT_LIGHTNING;
 		other.ammo_cells = other.ammo_cells + 15;
+	}
+	else if (self.classname == "weapon_revolver")
+	{
+		if (leave && (other.items & IT_REVOLVER) )
+			return;
+		hadammo = other.ammo_rockets;			
+		new = IT_REVOLVER;
+		other.ammo_magnum = other.ammo_magnum + 6;
 	}
 	else
 		objerror ("weapon_touch: unknown classname");
@@ -585,6 +595,16 @@ void() weapon_lightning =
 	StartItem ();
 };
 
+void() weapon_revolver =
+{
+	precache_model ("progs/Revolver.mdl");
+	setmodel (self, "progs/Revolver.mdl");
+	self.weapon = 3;
+	self.netname = "Revolver";
+	self.touch = weapon_touch;
+	setsize (self, '-16 -16 0', '16 16 56');
+	StartItem ();
+};
 
 /*
 ===============================================================================
@@ -643,6 +663,13 @@ local float		best;
 		other.ammo_cells = other.ammo_cells + self.aflag;
 	}
 
+//	Magnum
+	if (self.weapon == 5)
+	{
+		if (other.ammo_magnum >= 100)
+			return;
+		other.ammo_cells = other.ammo_cells + self.aflag;
+	}
 	bound_other_ammo ();
 	
 	sprint (other, "You got the ");
@@ -1260,6 +1287,7 @@ void() BackpackTouch =
 	other.ammo_nails = other.ammo_nails + self.ammo_nails;
 	other.ammo_rockets = other.ammo_rockets + self.ammo_rockets;
 	other.ammo_cells = other.ammo_cells + self.ammo_cells;
+	other.ammo_magnum = other.ammo_magnum + self.ammo_magnum;
 
 	new = self.items;
 	if (!new)
@@ -1366,7 +1394,7 @@ void() DropBackpack =
 	else if (item.items == IT_LIGHTNING)
 		item.netname = "Thunderbolt";
 	else if (item.items == IT_REVOLVER)
-		item.netname = "Thunderbolt";
+		item.netname = "Revolver";
 	else
 		item.netname = "";
 
