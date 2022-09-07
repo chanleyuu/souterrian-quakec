@@ -556,6 +556,8 @@ float	AS_MISSILE		= 4;
 .float		volume;
 
 
+//Weapon variables
+float revolver_cooldown = 2;
 
 
 //===========================================================================

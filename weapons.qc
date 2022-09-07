@@ -20,12 +20,14 @@
 		59 Temple Place - Suite 330
 		Boston, MA  02111-1307, USA
 */
+float revolver_ready; //Is the revolver ready to fire?
+
 void (entity targ, entity inflictor, entity attacker, float damage) T_Damage;
 void () player_run;
 void(entity bomb, entity attacker, float rad, entity ignore) T_RadiusDamage;
 void(vector org, vector vel, float damage) SpawnBlood;
 void() SuperDamageSound;
-
+void() cycle_revolver;
 
 // called by worldspawn
 void() W_Precache =
@@ -254,7 +256,7 @@ Used by shotgun, super shotgun, and enemy soldier firing
 Go to the trouble of combining multiple pellets into a single damage call.
 ================
 */
-void(float shotcount, vector dir, vector spread) FireBullets =
+void(float damage,float shotcount, vector dir, vector spread) FireBullets =
 {
 	local	vector direction;
 	local	vector	src;
@@ -271,7 +273,7 @@ void(float shotcount, vector dir, vector spread) FireBullets =
 
 		traceline (src, src + direction*2048, FALSE, self);
 		if (trace_fraction != 1.0)
-			TraceAttack (4, direction);
+			TraceAttack (damage, direction);
 
 		shotcount = shotcount - 1;
 	}
@@ -293,7 +295,7 @@ void() W_FireShotgun =
 	
 	self.currentammo = self.ammo_shells = self.ammo_shells - 1;
 	dir = aim (self, 100000);
-	FireBullets (6, dir, '0.04 0.04 0');
+	FireBullets (4, 6, dir, '0.04 0.04 0');
 };
 
 
@@ -318,7 +320,7 @@ void() W_FireSuperShotgun =
 	
 	self.currentammo = self.ammo_shells = self.ammo_shells - 2;
 	dir = aim (self, 100000);
-	FireBullets (14, dir, '0.14 0.08 0');
+	FireBullets (4, 14, dir, '0.14 0.08 0');
 };
 /*
 ==================
@@ -335,9 +337,20 @@ void() W_FireRevolver =
 	
 	self.currentammo = self.ammo_magnum = self.ammo_magnum - 1;
 	dir = aim (self, 100000);
-	FireBullets (1, dir, '0.0 0.0 0');
+	FireBullets (80, 1, dir, '0.0 0.0 0');
 };
 
+void() cycle_revolver =
+{
+	if (revolver_ready > 0) {
+		revolver_ready = revolver_ready - 1;
+		self.nextthink = time + 1;
+		return;
+	}
+	else {
+		sound (self, CHAN_WEAPON, "weapons/guncock.wav", 1, ATTN_NORM); //Play sound to notify that revolver is ready
+	}
+}
 /*
 ==============================================================================
 
@@ -985,7 +998,10 @@ void() W_Attack =
 	}
 	else if (self.weapon == IT_REVOLVER)
 	{
-		W_FireRevolver();
+		if (revolver_ready == 0) { //Zero means ready
+			W_FireRevolver();
+			self.attack_finished = time + 0.5;
+		}
 	}
 };
 
