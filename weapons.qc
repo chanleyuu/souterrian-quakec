@@ -350,7 +350,7 @@ void() cycle_revolver =
 	else {
 		sound (self, CHAN_WEAPON, "weapons/guncock.wav", 1, ATTN_NORM); //Play sound to notify that revolver is ready
 	}
-}
+};
 /*
 ==============================================================================
 
@@ -1277,7 +1277,7 @@ void() CycleWeaponReverseCommand =
 	
 		if ( (it & self.weapon) && am == 0)
 		{
-			W_SetCurrentAmmo ();WARNING: Multiple Linux users have reported issues using this s
+			W_SetCurrentAmmo ();
 			return;
 		}
 	}

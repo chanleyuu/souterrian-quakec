@@ -300,6 +300,7 @@ float	IT_SHELLS				= 256;
 float	IT_NAILS				= 512;
 float	IT_ROCKETS				= 1024;
 float	IT_CELLS				= 2048;
+float	IT_MAGNUM				= 7000;
 
 float	IT_ARMOR1				= 8192;
 float	IT_ARMOR2				= 16384;

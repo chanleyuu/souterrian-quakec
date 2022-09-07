@@ -342,8 +342,8 @@ void() bound_other_ammo =
 		other.ammo_rockets = 100;		
 	if (other.ammo_cells > 100)
 		other.ammo_cells = 100;		
-	if (other.ammo_revolver > 100)
-		other.ammo_revolver = 100;	
+	if (other.ammo_magnum > 100)
+		other.ammo_magnum = 100;	
 };
 
 
