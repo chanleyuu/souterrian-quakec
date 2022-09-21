@@ -1317,7 +1317,7 @@ void() ImpulseCommands =
 	if (self.impulse >= 1 && self.impulse <= 8)
 		W_ChangeWeapon ();
 
-	if (self.impulse == 9)
+	if (self.impulse == 101)
 		CheatCommand ();
 	if (self.impulse == 10)
 		CycleWeaponCommand ();
