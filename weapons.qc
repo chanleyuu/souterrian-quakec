@@ -44,7 +44,7 @@ void() W_Precache =
 	precache_sound ("weapons/grenade.wav");	// grenade launcher
 	precache_sound ("weapons/bounce.wav");		// grenade bounce
 	precache_sound ("weapons/shotgn2.wav");	// super shotgun
-	precache_sound ("weapons/revolver.ogg");	// revolver
+	precache_sound ("weapons/revolver.wav");	// revolver
 };
 
 float() crandom =
@@ -331,7 +331,7 @@ void() W_FireRevolver =
 {
 	local vector dir;
 	
-	sound (self, CHAN_WEAPON, "weapons/revolver.ogg", 1, ATTN_NORM);
+	sound (self, CHAN_WEAPON, "weapons/revolver.wav", 1, ATTN_NORM);
 	
 	self.punchangle_x = -2;
 	
@@ -349,6 +349,7 @@ void() cycle_revolver =
 	}
 	else {
 		sound (self, CHAN_WEAPON, "weapons/guncock.wav", 1, ATTN_NORM); //Play sound to notify that revolver is ready
+		revolver_ready = 3;
 	}
 };
 /*
@@ -809,7 +810,7 @@ void() W_SetCurrentAmmo =
 {
 	player_run ();		// get out of any weapon firing states
 
-	self.items = self.items - ( self.items & (IT_SHELLS | IT_NAILS | IT_ROCKETS | IT_CELLS) );
+	self.items = self.items - ( self.items & (IT_SHELLS | IT_NAILS | IT_ROCKETS | IT_CELLS | IT_MAGNUM) );
 	
 	if (self.weapon == IT_AXE)
 	{
@@ -933,6 +934,7 @@ void()	player_shot1;
 void()	player_nail1;
 void()	player_light1;
 void()	player_rocket1;
+void()	player_revolver1;
 
 void() W_Attack =
 {
@@ -999,8 +1001,9 @@ void() W_Attack =
 	else if (self.weapon == IT_REVOLVER)
 	{
 		if (revolver_ready == 0) { //Zero means ready
+			player_revolver1();
 			W_FireRevolver();
-			self.attack_finished = time + 0.5;
+			self.attack_finished = time + 2.5;
 		}
 	}
 };
@@ -1105,6 +1108,7 @@ void() CheatCommand =
 	self.ammo_rockets = 100;
 	self.ammo_nails = 200;
 	self.ammo_shells = 100;
+	self.ammo_magnum = 100;
 	self.items = self.items | 
 		IT_AXE |
 		IT_SHOTGUN |
@@ -1314,7 +1318,7 @@ ImpulseCommands
 */
 void() ImpulseCommands =
 {
-	if (self.impulse >= 1 && self.impulse <= 8)
+	if (self.impulse >= 1 && self.impulse <= 9)
 		W_ChangeWeapon ();
 
 	if (self.impulse == 101)

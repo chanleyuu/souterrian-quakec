@@ -78,7 +78,7 @@ $frame axattc1 axattc2 axattc3 axattc4 axattc5 axattc6
 
 $frame axattd1 axattd2 axattd3 axattd4 axattd5 axattd6
 
-
+$frame revolver1
 /*
 ==============================================================================
 PLAYER
@@ -238,6 +238,7 @@ void() player_rocket5   =[$rockatt5, player_rocket6  ] {self.weaponframe=5;};
 void() player_rocket6   =[$rockatt6, player_run  ] {self.weaponframe=6;};
 void(float num_bubbles) DeathBubbles;
 
+void()	player_revolver1 = [$revolver1, player_run ] { self.weaponframe=1; self.effects = self.effects | EF_MUZZLEFLASH;};
 void() PainSound =
 {
 local float		rs;

@@ -349,19 +349,21 @@ void() bound_other_ammo =
 
 float(float w) RankForWeapon =
 {
+	if (w == IT_REVOLVER)
+		return 1
 	if (w == IT_LIGHTNING)
-		return 1;
-	if (w == IT_ROCKET_LAUNCHER)
 		return 2;
-	if (w == IT_SUPER_NAILGUN)
+	if (w == IT_ROCKET_LAUNCHER)
 		return 3;
-	if (w == IT_GRENADE_LAUNCHER)
+	if (w == IT_SUPER_NAILGUN)
 		return 4;
-	if (w == IT_SUPER_SHOTGUN)
+	if (w == IT_GRENADE_LAUNCHER)
 		return 5;
-	if (w == IT_NAILGUN)
+	if (w == IT_SUPER_SHOTGUN)
 		return 6;
-	return 7;
+	if (w == IT_NAILGUN)
+		return 7;
+	return 8;
 };
 
 /*
