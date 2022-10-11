@@ -350,7 +350,7 @@ void() bound_other_ammo =
 float(float w) RankForWeapon =
 {
 	if (w == IT_REVOLVER)
-		return 1
+		return 1;
 	if (w == IT_LIGHTNING)
 		return 2;
 	if (w == IT_ROCKET_LAUNCHER)
@@ -415,7 +415,7 @@ void() weapon_touch =
 	
 	if (self.classname == "weapon_nailgun")
 	{
-		if (leave && (other.items & IT_NAILGUN) )
+		if (leave && (other.items_weapons & IT_NAILGUN) )
 			return;
 		hadammo = other.ammo_nails;			
 		new = IT_NAILGUN;
@@ -423,7 +423,7 @@ void() weapon_touch =
 	}
 	else if (self.classname == "weapon_supernailgun")
 	{
-		if (leave && (other.items & IT_SUPER_NAILGUN) )
+		if (leave && (other.items_weapons & IT_SUPER_NAILGUN) )
 			return;
 		hadammo = other.ammo_rockets;			
 		new = IT_SUPER_NAILGUN;
@@ -431,7 +431,7 @@ void() weapon_touch =
 	}
 	else if (self.classname == "weapon_supershotgun")
 	{
-		if (leave && (other.items & IT_SUPER_SHOTGUN) )
+		if (leave && (other.items_weapons & IT_SUPER_SHOTGUN) )
 			return;
 		hadammo = other.ammo_rockets;			
 		new = IT_SUPER_SHOTGUN;
@@ -439,7 +439,7 @@ void() weapon_touch =
 	}
 	else if (self.classname == "weapon_rocketlauncher")
 	{
-		if (leave && (other.items & IT_ROCKET_LAUNCHER) )
+		if (leave && (other.items_weapons & IT_ROCKET_LAUNCHER) )
 			return;
 		hadammo = other.ammo_rockets;			
 		new = IT_ROCKET_LAUNCHER;
@@ -447,7 +447,7 @@ void() weapon_touch =
 	}
 	else if (self.classname == "weapon_grenadelauncher")
 	{
-		if (leave && (other.items & IT_GRENADE_LAUNCHER) )
+		if (leave && (other.items_weapons & IT_GRENADE_LAUNCHER) )
 			return;
 		hadammo = other.ammo_rockets;			
 		new = IT_GRENADE_LAUNCHER;
@@ -455,7 +455,7 @@ void() weapon_touch =
 	}
 	else if (self.classname == "weapon_lightning")
 	{
-		if (leave && (other.items & IT_LIGHTNING) )
+		if (leave && (other.items_weapons & IT_LIGHTNING) )
 			return;
 		hadammo = other.ammo_rockets;			
 		new = IT_LIGHTNING;
@@ -463,7 +463,7 @@ void() weapon_touch =
 	}
 	else if (self.classname == "weapon_revolver")
 	{
-		if (leave && (other.items & IT_REVOLVER) )
+		if (leave && (other.items_weapons & IT_REVOLVER) )
 			return;
 		hadammo = other.ammo_rockets;			
 		new = IT_REVOLVER;
@@ -482,8 +482,8 @@ void() weapon_touch =
 	bound_other_ammo ();
 
 // change to the weapon
-	old = other.items;
-	other.items = other.items | new;
+	old = other.items_weapons;
+	other.items_weapons = other.items_weapons | new;
 	
 	stemp = self;
 	self = other;
@@ -1378,24 +1378,24 @@ void() DropBackpack =
 	item = spawn();
 	item.origin = self.origin - '0 0 24';
 	
-	item.items = self.weapon;
-	if (item.items == IT_AXE)
+	item.items_weapons = self.weapon;
+	if (item.items_weapons == IT_AXE)
 		item.netname = "Axe";
-	else if (item.items == IT_SHOTGUN)
+	else if (item.items_weapons == IT_SHOTGUN)
 		item.netname = "Shotgun";
-	else if (item.items == IT_SUPER_SHOTGUN)
+	else if (item.items_weapons == IT_SUPER_SHOTGUN)
 		item.netname = "Double-barrelled Shotgun";
-	else if (item.items == IT_NAILGUN)
+	else if (item.items_weapons == IT_NAILGUN)
 		item.netname = "Nailgun";
-	else if (item.items == IT_SUPER_NAILGUN)
+	else if (item.items_weapons == IT_SUPER_NAILGUN)
 		item.netname = "Super Nailgun";
-	else if (item.items == IT_GRENADE_LAUNCHER)
+	else if (item.items_weapons == IT_GRENADE_LAUNCHER)
 		item.netname = "Grenade Launcher";
-	else if (item.items == IT_ROCKET_LAUNCHER)
+	else if (item.items_weapons == IT_ROCKET_LAUNCHER)
 		item.netname = "Rocket Launcher";
-	else if (item.items == IT_LIGHTNING)
+	else if (item.items_weapons == IT_LIGHTNING)
 		item.netname = "Thunderbolt";
-	else if (item.items == IT_REVOLVER)
+	else if (item.items_weapons == IT_REVOLVER)
 		item.netname = "Revolver";
 	else
 		item.netname = "";

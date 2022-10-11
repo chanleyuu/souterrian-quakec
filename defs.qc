@@ -144,6 +144,7 @@ void		end_sys_globals;		// flag for structure dumping
 .float		ammo_shells, ammo_nails, ammo_rockets, ammo_cells, ammo_magnum;
 
 .float		items;			// bit flags
+.float		items_weapons; //bit flags for weapons
 
 .float		takedamage;
 .entity		chain;
@@ -294,13 +295,13 @@ float	IT_GRENADE_LAUNCHER		= 16;
 float	IT_ROCKET_LAUNCHER		= 32;
 float	IT_LIGHTNING			= 64;
 float	IT_EXTRA_WEAPON			= 128;
-float	IT_REVOLVER				= 6096;
+float	IT_REVOLVER				= 8388608;
 
 float	IT_SHELLS				= 256;
 float	IT_NAILS				= 512;
 float	IT_ROCKETS				= 1024;
 float	IT_CELLS				= 2048;
-float	IT_MAGNUM				= 7000;
+float	IT_MAGNUM				= 1;
 
 float	IT_ARMOR1				= 8192;
 float	IT_ARMOR2				= 16384;
@@ -413,6 +414,7 @@ entity	damage_attacker;	// set by T_Damage
 float	framecount;
 
 float		skill;
+float revolver_ready; //Is the revolver ready to fire?
 //float		dash_time;
 //================================================
 

@@ -20,7 +20,6 @@
 		59 Temple Place - Suite 330
 		Boston, MA  02111-1307, USA
 */
-float revolver_ready; //Is the revolver ready to fire?
 
 void (entity targ, entity inflictor, entity attacker, float damage) T_Damage;
 void () player_run;
@@ -338,18 +337,21 @@ void() W_FireRevolver =
 	self.currentammo = self.ammo_magnum = self.ammo_magnum - 1;
 	dir = aim (self, 100000);
 	FireBullets (80, 1, dir, '0.0 0.0 0');
+	revolver_ready = revolver_cooldown;
+	self.think = cycle_revolver;
 };
 
 void() cycle_revolver =
 {
-	if (revolver_ready > 0) {
-		revolver_ready = revolver_ready - 1;
-		self.nextthink = time + 1;
+	if (revolver_ready >= 1) {
+		revolver_ready = revolver_ready - 0.5;
+		self.nextthink = time + 0.5;
+		bprint (ftos(revolver_ready));
 		return;
 	}
 	else {
 		sound (self, CHAN_WEAPON, "weapons/guncock.wav", 1, ATTN_NORM); //Play sound to notify that revolver is ready
-		revolver_ready = 3;
+		revolver_ready = 0;
 	}
 };
 /*
@@ -886,7 +888,7 @@ float() W_BestWeapon =
 {
 	local	float	it;
 	
-	it = self.items;
+	it = self.items_weapons;
 
 	if(self.ammo_magnum >= 1 && (it & IT_REVOLVER) )
 		return IT_REVOLVER;
@@ -1003,7 +1005,8 @@ void() W_Attack =
 		if (revolver_ready == 0) { //Zero means ready
 			player_revolver1();
 			W_FireRevolver();
-			self.attack_finished = time + 2.5;
+			self.attack_finished = time + 0.5;
+			//revolver_ready = 2;
 		}
 	}
 };
@@ -1018,7 +1021,7 @@ void() W_ChangeWeapon =
 {
 	local	float	it, am, fl;
 	
-	it = self.items;
+	it = self.items_weapons;
 	am = 0;
 	
 	if (self.impulse == 1)
@@ -1070,13 +1073,14 @@ void() W_ChangeWeapon =
 	else if (self.impulse == 9)
 	{
 		fl = IT_REVOLVER;
+		//self.think = cycle_revolver;
 		if (self.ammo_magnum < 1)
 			am = 1;
 	}
 	
 	self.impulse = 0;
 	
-	if (!(self.items & fl))
+	if (!(self.items_weapons & fl))
 	{	// don't have the weapon or the ammo
 		sprint (self, "no weapon.\n");
 		return;
@@ -1109,7 +1113,7 @@ void() CheatCommand =
 	self.ammo_nails = 200;
 	self.ammo_shells = 100;
 	self.ammo_magnum = 100;
-	self.items = self.items | 
+	self.items_weapons = self.items_weapons | 
 		IT_AXE |
 		IT_SHOTGUN |
 		IT_SUPER_SHOTGUN |
@@ -1117,11 +1121,13 @@ void() CheatCommand =
 		IT_SUPER_NAILGUN |
 		IT_GRENADE_LAUNCHER |
 		IT_ROCKET_LAUNCHER |
-		IT_REVOLVER |
+		IT_REVOLVER ;
+		
+	self.items = self.items |
 		IT_KEY1 | IT_KEY2;
 
 	self.ammo_cells = 200;
-	self.items = self.items | IT_LIGHTNING;
+	self.items_weapons = self.items_weapons | IT_LIGHTNING;
 
 	self.weapon = IT_ROCKET_LAUNCHER;
 	self.impulse = 0;
@@ -1139,7 +1145,7 @@ void() CycleWeaponCommand =
 {
 	local	float	it, am;
 	
-	it = self.items;
+	it = self.items_weapons;
 	self.impulse = 0;
 	
 	while (1)
@@ -1195,6 +1201,7 @@ void() CycleWeaponCommand =
 		else if (self.weapon == IT_LIGHTNING)
 		{
 			self.weapon = IT_REVOLVER;
+			//self.think = cycle_revolver;
 			if (self.ammo_cells < 1)
 				am = 1;
 		}
@@ -1219,7 +1226,7 @@ void() CycleWeaponReverseCommand =
 {
 	local	float	it, am;
 	
-	it = self.items;
+	it = self.items_weapons;
 	self.impulse = 0;
 
 	while (1)
@@ -1275,6 +1282,7 @@ void() CycleWeaponReverseCommand =
 		else if (self.weapon == IT_AXE)
 		{
 			self.weapon = IT_REVOLVER;
+			//self.think = cycle_revolver;
 			if (self.ammo_cells < 1)
 				am = 1;
 		}

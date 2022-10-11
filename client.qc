@@ -46,7 +46,7 @@ void() SetChangeParms =
 		self.health = 100;
 	if (self.health < 50)
 		self.health = 50;
-	parm1 = self.items;
+	parm1 = self.items_weapons;
 	parm2 = self.health;
 	parm3 = self.armorvalue;
 	if (self.ammo_shells < 25)
@@ -81,7 +81,7 @@ void() DecodeLevelParms =
 			SetNewParms ();		// take away all stuff on starting new episode
 	}
 	
-	self.items = parm1;
+	self.items_weapons = parm1;
 	self.health = parm2;
 	self.armorvalue = parm3;
 	self.ammo_shells = parm4;
